@@ -1,4 +1,4 @@
-const BACKEND_URL = 'REPLACE_WITH_YOUR_VERCEL_URL';
+const BACKEND_URL = 'ai-code-backend-psi.vercel.app';
 
 // Function to handle code generation
 async function generateCode() {
@@ -13,7 +13,7 @@ async function generateCode() {
     downloadLink.classList.add('hidden');
 
     try {
-        const response = await fetch(`${BACKEND_URL}/api/generate`, {
+        const response = await fetch(`${ai-code-backend-psi.vercel.app}/api/generate`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,4 +75,5 @@ function downloadZip(filesObj, zipFilename = 'files.zip') {
             document.body.removeChild(link);
         }, 100);
     });
+
 }
