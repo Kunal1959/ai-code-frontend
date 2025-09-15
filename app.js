@@ -1,4 +1,4 @@
-const BACKEND_URL = 'ai-code-backend-psi.vercel.app';
+const BACKEND_URL = "https://ai-code-backend-psi.vercel.app";
 
 // Function to handle code generation
 async function generateCode() {
@@ -13,7 +13,7 @@ async function generateCode() {
     downloadLink.classList.add('hidden');
 
     try {
-        const response = await fetch(`${ai-code-backend-psi.vercel.app}/api/generate`, {
+        const response = await fetch(`${BACKEND_URL}/api/generate`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,48 +32,17 @@ async function generateCode() {
         const data = await response.json();
         
         // Display the generated code
-        outputElement.textContent = data.generatedCode || 'No code generated';
+        // Note: Your backend returns 'code' not 'generatedCode'
+        outputElement.textContent = data.code || 'No code generated';
         
         // Enable download functionality
-        if (data.generatedCode) {
-            const blob = new Blob([data.generatedCode], { type: 'text/plain' });
+        if (data.code) {
+            const blob = new Blob([data.code], { type: 'text/plain' });
             downloadLink.href = URL.createObjectURL(blob);
             downloadLink.classList.remove('hidden');
         }
     } catch (error) {
         outputElement.textContent = `Error: ${error.message}`;
+        console.error('API Error:', error);
     }
-}
-/*
- * JSZip CDN: https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
- *
- * Example usage:
- *   const files = {
- *     'file1.txt': 'Hello, world!',
- *     'file2.js': 'console.log("Hello from JS file!");'
- *   };
- *   downloadZip(files, 'myfiles.zip');
- */
-
-function downloadZip(filesObj, zipFilename = 'files.zip') {
-    if (typeof JSZip === 'undefined') {
-        alert('JSZip is not loaded. Please include JSZip via CDN.');
-        return;
-    }
-    const zip = new JSZip();
-    for (const [filename, content] of Object.entries(filesObj)) {
-        zip.file(filename, content);
-    }
-    zip.generateAsync({ type: 'blob' }).then(function (blob) {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = zipFilename;
-        document.body.appendChild(link);
-        link.click();
-        setTimeout(() => {
-            URL.revokeObjectURL(link.href);
-            document.body.removeChild(link);
-        }, 100);
-    });
-
 }
